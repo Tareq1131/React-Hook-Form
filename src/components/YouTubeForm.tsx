@@ -39,9 +39,10 @@ const YouTubeForm = () => {
 
     },
   })
-  const { register, control, handleSubmit, formState,watch,getValues } = form
+  const { register, control, handleSubmit, formState, watch, getValues, setValue, } = form
   // const { name, ref, onChange, onBlur } = register('username')
-  const { errors } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+  console.log('touch ', touchedFields, dirtyFields, isDirty)
 
   const { fields, append, remove } = useFieldArray({
 
@@ -52,20 +53,28 @@ const YouTubeForm = () => {
   const onSubmit = (data: FormValues) => {
     console.log(data);
   };
-//for get spacial value
+  //for get spacial value
   const handleGetValues = () => {
     console.log("Get values", getValues("social.facebook"));
-    console.log("Get values", getValues(["social.facebook",'username']));
+    console.log("Get values", getValues(["social.facebook", 'username']));
+  };
+  //for set spacial value register field
+  const handleSetValue = () => {
+    setValue("username", "", {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
   };
 
   renderCount++;
-  const watchusername=watch(["username",'email'])
+  const watchusername = watch(["username", 'email'])
   // const watchusername=watch()
   return (
     <div>
       <h1>YouTube Form({renderCount / 2})</h1>
       {/* <h2>Watch value:{JSON.stringify(watchusername)}</h2>  */}
-      <h2>Watch value:{watchusername}</h2> 
+      <h2>Watch value:{watchusername}</h2>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className='form-control'>
           <label htmlFor="username">Username</label>
@@ -123,6 +132,9 @@ const YouTubeForm = () => {
         <div className='form-control'>
           <label htmlFor="twitter">Twitter</label>
           <input type="text" id="channel" {...register('social.twitter', {
+
+            disabled: watch('channel') === '',
+            required: "Enter Twitter",
 
           })} />
 
@@ -205,6 +217,9 @@ const YouTubeForm = () => {
         <button>Submit</button>
         <button type="button" onClick={handleGetValues}>
           Get values
+        </button>
+        <button type="button" onClick={handleSetValue}>
+          Set value
         </button>
       </form>
       <DevTool control={control} />
