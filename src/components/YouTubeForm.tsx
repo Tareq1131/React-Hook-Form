@@ -5,23 +5,27 @@ type FormValues = {
   username: string,
   email: string;
   channel: string;
+  social: {
+    twitter: string,
+    facebook: string
+  }
 };
 let renderCount = 0;
 const YouTubeForm = () => {
 
   const form = useForm<FormValues>({
-    defaultValues: async () =>{
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/users/1"
-      );
-      const data = await response.json();
-      return {
-        username: "Batman",
-        email: data.email,
-        channel: "",
-       
-    }
-  }})
+    defaultValues:
+    {
+      username: "Batman",
+      email: '',
+      channel: "",
+      social: {
+        twitter: "",
+        facebook: "",
+      }
+
+    },
+  })
   const { register, control, handleSubmit, formState } = form
   // const { name, ref, onChange, onBlur } = register('username')
   const { errors } = formState;
@@ -75,7 +79,7 @@ const YouTubeForm = () => {
                   "This domain is not supported"
                 );
               },
-            
+
             },
           })} />
           <p className="error">{errors.email?.message}</p>
@@ -87,6 +91,22 @@ const YouTubeForm = () => {
             required: "channel is required"
           })} />
           <p className="error">{errors.channel?.message}</p>
+        </div>
+
+        <div className='form-control'>
+          <label htmlFor="twitter">Twitter</label>
+          <input type="text" id="channel" {...register('social.twitter', {
+
+          })} />
+
+        </div>
+
+        <div className='form-control'>
+          <label htmlFor="facebook">FACEBOOK</label>
+          <input type="text" id="channel" {...register('social.facebook', {
+
+          })} />
+
         </div>
         <button>Submit</button>
       </form>
