@@ -1,5 +1,6 @@
 import { useFieldArray, useForm } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
+import { useEffect } from 'react';
 
 type FormValues = {
   username: string,
@@ -39,9 +40,9 @@ const YouTubeForm = () => {
 
     },
   })
-  const { register, control, handleSubmit, formState, watch, getValues, setValue, } = form
+  const { register, control, handleSubmit, formState, watch, getValues, setValue,reset } = form
   // const { name, ref, onChange, onBlur } = register('username')
-  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty,isSubmitSuccessful, } = formState;
   console.log('touch ', touchedFields, dirtyFields, isDirty)
 
   const { fields, append, remove } = useFieldArray({
@@ -66,7 +67,16 @@ const YouTubeForm = () => {
       shouldTouch: true,
     });
   };
+  // const onReset = () => {
+  //   reset();
+  // };
 
+  
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
   renderCount++;
   const watchusername = watch(["username", 'email'])
   // const watchusername=watch()
@@ -220,6 +230,9 @@ const YouTubeForm = () => {
         </button>
         <button type="button" onClick={handleSetValue}>
           Set value
+        </button>
+        <button type="button" onClick={()=> reset()}>
+          Reset
         </button>
       </form>
       <DevTool control={control} />
