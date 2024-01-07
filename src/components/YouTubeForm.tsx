@@ -39,7 +39,7 @@ const YouTubeForm = () => {
 
     },
   })
-  const { register, control, handleSubmit, formState } = form
+  const { register, control, handleSubmit, formState,watch,getValues } = form
   // const { name, ref, onChange, onBlur } = register('username')
   const { errors } = formState;
 
@@ -52,12 +52,20 @@ const YouTubeForm = () => {
   const onSubmit = (data: FormValues) => {
     console.log(data);
   };
+//for get spacial value
+  const handleGetValues = () => {
+    console.log("Get values", getValues("social.facebook"));
+    console.log("Get values", getValues(["social.facebook",'username']));
+  };
 
   renderCount++;
+  const watchusername=watch(["username",'email'])
+  // const watchusername=watch()
   return (
     <div>
       <h1>YouTube Form({renderCount / 2})</h1>
-
+      {/* <h2>Watch value:{JSON.stringify(watchusername)}</h2>  */}
+      <h2>Watch value:{watchusername}</h2> 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className='form-control'>
           <label htmlFor="username">Username</label>
@@ -195,6 +203,9 @@ const YouTubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
         <button>Submit</button>
+        <button type="button" onClick={handleGetValues}>
+          Get values
+        </button>
       </form>
       <DevTool control={control} />
     </div>
