@@ -39,6 +39,7 @@ const YouTubeForm = () => {
       dob: new Date(),
 
     },
+    mode: 'all'
   })
   const { register, control, handleSubmit, formState, watch, getValues, setValue,reset } = form
   // const { name, ref, onChange, onBlur } = register('username')
@@ -71,7 +72,7 @@ const YouTubeForm = () => {
   //   reset();
   // };
 
-  
+
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
